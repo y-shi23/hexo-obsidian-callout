@@ -1,13 +1,15 @@
 {
   "name": "hexo-obsidian-callout",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Hexo plugin that renders Obsidian-style callouts in posts and pages.",
   "main": "index.js",
   "files": [
     "index.js",
     "lib",
     "styles",
-    "README.md"
+    "README.md",
+    "TROUBLESHOOTING.md",
+    "CONFIGURATION.md"
   ],
   "scripts": {
     "test": "mocha"
@@ -16,10 +18,21 @@
     "hexo",
     "hexo-plugin",
     "callout",
-    "obsidian"
+    "obsidian",
+    "markdown",
+    "admonition",
+    "blockquote"
   ],
   "author": "ocean",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/y-shi23/hexo-obsidian-callout.git"
+  },
+  "bugs": {
+    "url": "https://github.com/y-shi23/hexo-obsidian-callout/issues"
+  },
+  "homepage": "https://github.com/y-shi23/hexo-obsidian-callout#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12"
   },
@@ -28,5 +41,8 @@
   },
   "peerDependencies": {
     "hexo": ">=5.0.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   }
 }

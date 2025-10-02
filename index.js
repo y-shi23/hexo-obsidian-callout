@@ -28,15 +28,29 @@ module.exports = function register(hexo) {
   const iconSet = buildIconSet(config.iconSet);
   const aliasMap = Object.assign({}, TYPE_ALIASES, normalizeAliases(config.alias));
 
+  // Register filter with higher priority to ensure it runs
   hexo.extend.filter.register('after_post_render', function calloutFilter(data) {
     if (!data || !data.content) return data;
+    
+    if (config.debug) {
+      hexo.log.info('[hexo-obsidian-callout] Processing:', data.title || data.path || 'unknown');
+      const blockquoteCount = (data.content.match(/<blockquote>/gi) || []).length;
+      hexo.log.info('[hexo-obsidian-callout] Found blockquotes:', blockquoteCount);
+    }
+    
+    const originalContent = data.content;
     data.content = transformCallouts(data.content, {
       iconSet,
       aliasMap,
       debug: config.debug
     });
+    
+    if (config.debug && originalContent !== data.content) {
+      hexo.log.info('[hexo-obsidian-callout] Content transformed successfully');
+    }
+    
     return data;
-  });
+  }, 5); // Lower priority number = runs earlier
 
   hexo.extend.generator.register('hexo-obsidian-callout-css', () => {
     const cssContent = fs.readFileSync(absoluteCssSource, 'utf8');

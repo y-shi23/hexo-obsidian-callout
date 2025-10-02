@@ -1,6 +1,63 @@
+# hexo-obsid## 🚀 安装
+
+在 Hexo 项目根目录执行:
+
+```bash
+npm install hexo-obsidian-callout --save
+```
+
+安装后重启 Hexo 服务器## 🧪 测试与开发
+
+克隆本仓库后,可使用以下命令进行开发:
+
+```bash
+npm install
+npm test
+```
+
+测试覆盖了基本转换、折叠行为与嵌套场景。
+
+## 🔍 故障排查
+
+如果 callout 没有正确渲染,请:
+
+1. **启用调试模式**:
+   ```yaml
+   obsidian_callout:
+     enabled: true
+     debug: true
+   ```
+
+2. **清除缓存并重新生成**:
+   ```bash
+   hexo clean
+   hexo generate
+   ```
+
+3. **检查 Markdown 渲染器配置** (在 `_config.yml` 中):
+   ```yaml
+   markdown:
+     breaks: true  # 建议开启
+   ```
+
+4. 查看详细的故障排查指南: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+
+## 📄 许可证
+hexo clean
+hexo server
+```
+
+> **注意**: 安装后必须运行 `hexo clean` 清除缓存,否则插件可能不会生效。
+
+## ⚙️ 配置
+
 # hexo-obsidian-callout
 
-为 Hexo 博客带来与 Obsidian 原生体验一致的 Callout 呈现效果。该插件会解析文章中的 `[!type]` 块引用语法，生成带有现代化视觉风格、可折叠交互与语义化 HTML 的提示框，并自动注入所需的样式表。
+为 Hexo 博客带来与 Obsidian 原生体验一致的 Callout 呈现效果。该插件会解析文章中的 `[!type]` 块引用语法,生成带有现代化视觉风格、可折叠交互与语义化 HTML 的提示框,并自动注入所需的样式表。
+
+> **🔥 重要提示**: 安装后必须运行 `hexo clean` 清除缓存,否则插件可能不会生效!
+
+## ✨ 特性
 
 ## ✨ 特性
 
