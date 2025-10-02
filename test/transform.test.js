@@ -5,6 +5,15 @@ const cheerio = require('cheerio');
 const transformCallouts = require('../lib/transform');
 
 describe('transformCallouts', () => {
+  it('returns fragment html without wrapping document structure', () => {
+    const input = '<blockquote><p>[!info]</p><p>Body content</p></blockquote>';
+    const output = transformCallouts(input);
+
+    assert.ok(!/^<html/i.test(output));
+    assert.ok(!output.includes('<html>'));
+    assert.ok(!output.includes('<body>'));
+  });
+
   it('converts a basic callout with default title', () => {
     const input = '<blockquote><p>[!info]</p><p>Body content</p></blockquote>';
     const output = transformCallouts(input);
@@ -27,6 +36,32 @@ describe('transformCallouts', () => {
     assert.strictEqual($callout.attr('data-callout'), 'tip');
     assert.strictEqual($callout.find('.hexo-callout__title').html(), 'Callouts can have <em>custom</em> titles');
     assert.ok(/More text/.test($callout.find('.hexo-callout__content').text()));
+  });
+
+  it('extracts body content that follows the marker within the same paragraph', () => {
+    const input = `<blockquote><p>[!note]
+First line of body
+Second line of body</p></blockquote>`;
+    const output = transformCallouts(input);
+    const $ = cheerio.load(output);
+    const $callout = $('.hexo-callout');
+    const bodyText = $callout.find('.hexo-callout__content').text();
+
+    assert.strictEqual($callout.attr('data-callout'), 'note');
+    assert.strictEqual($callout.find('.hexo-callout__title').text().trim(), 'Note');
+    assert.ok(bodyText.includes('First line of body'));
+    assert.ok(bodyText.includes('Second line of body'));
+  });
+
+  it('splits custom title and body when separated by a <br> marker', () => {
+    const input = '<blockquote><p>[!tip] Custom heading<br>Detailed explanation</p></blockquote>';
+    const output = transformCallouts(input);
+    const $ = cheerio.load(output);
+    const $callout = $('.hexo-callout');
+
+    assert.strictEqual($callout.attr('data-callout'), 'tip');
+    assert.strictEqual($callout.find('.hexo-callout__title').text().trim(), 'Custom heading');
+    assert.ok(/Detailed explanation/.test($callout.find('.hexo-callout__content').text()));
   });
 
   it('creates collapsible details for foldable callouts', () => {

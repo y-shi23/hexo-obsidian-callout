@@ -1,6 +1,6 @@
 {
   "name": "hexo-obsidian-callout",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hexo plugin that renders Obsidian-style callouts in posts and pages.",
   "main": "index.js",
   "files": [
