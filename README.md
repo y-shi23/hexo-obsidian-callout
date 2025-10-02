@@ -21,26 +21,44 @@ npm test
 
 如果 callout 没有正确渲染,请:
 
-1. **启用调试模式**:
+1. **🔥 最常见问题：缓存！**
+   ```bash
+   hexo clean  # 90% 的问题都能靠这个解决！
+   hexo generate
+   ```
+
+2. **启用调试模式**:
    ```yaml
    obsidian_callout:
      enabled: true
      debug: true
    ```
 
-2. **清除缓存并重新生成**:
-   ```bash
-   hexo clean
-   hexo generate
+3. **检查 Markdown 语法**:
+   ```markdown
+   > [!info]        # ✅ 正确：> 后有空格
+   > 这是内容
+   
+   >[!info]         # ❌ 错误：> 后没有空格
    ```
 
-3. **检查 Markdown 渲染器配置** (在 `_config.yml` 中):
+4. **确认插件已安装**:
+   ```bash
+   npm list hexo-obsidian-callout
+   ```
+
+5. **查看详细指南**:
+   - [快速修复指南](./QUICKFIX.md) - 解决渲染为引用块的问题
+   - [调试步骤](./DEBUG.md) - 详细的诊断流程
+   - [故障排查](./TROUBLESHOOTING.md) - 完整的问题清单
+
+6. **检查 Markdown 渲染器配置** (在 `_config.yml` 中):
    ```yaml
    markdown:
      breaks: true  # 建议开启
    ```
 
-4. 查看详细的故障排查指南: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+7. 查看详细的故障排查指南: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
 ## 📄 许可证
 hexo clean

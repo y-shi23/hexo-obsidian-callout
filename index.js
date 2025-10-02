@@ -18,7 +18,13 @@ module.exports = function register(hexo) {
   const userConfig = hexo.config.obsidian_callout || {};
   const config = mergeConfig(defaultConfig, userConfig);
 
+  // 始终输出插件加载信息
+  hexo.log.info('[hexo-obsidian-callout] Plugin loaded, version 0.1.3');
+  hexo.log.info('[hexo-obsidian-callout] Enabled:', config.enabled);
+  hexo.log.info('[hexo-obsidian-callout] Debug mode:', config.debug);
+
   if (!config.enabled) {
+    hexo.log.warn('[hexo-obsidian-callout] Plugin is disabled in config');
     return;
   }
 
@@ -36,6 +42,14 @@ module.exports = function register(hexo) {
       hexo.log.info('[hexo-obsidian-callout] Processing:', data.title || data.path || 'unknown');
       const blockquoteCount = (data.content.match(/<blockquote>/gi) || []).length;
       hexo.log.info('[hexo-obsidian-callout] Found blockquotes:', blockquoteCount);
+      
+      // 输出前100个字符用于调试
+      if (blockquoteCount > 0) {
+        const firstBlockquote = data.content.match(/<blockquote>[\s\S]{0,200}/i);
+        if (firstBlockquote) {
+          hexo.log.info('[hexo-obsidian-callout] First blockquote preview:', firstBlockquote[0]);
+        }
+      }
     }
     
     const originalContent = data.content;
@@ -47,10 +61,16 @@ module.exports = function register(hexo) {
     
     if (config.debug && originalContent !== data.content) {
       hexo.log.info('[hexo-obsidian-callout] Content transformed successfully');
+      const calloutCount = (data.content.match(/class="hexo-callout"/gi) || []).length;
+      hexo.log.info('[hexo-obsidian-callout] Created callouts:', calloutCount);
+    } else if (config.debug) {
+      hexo.log.warn('[hexo-obsidian-callout] No transformation occurred');
     }
     
     return data;
   }, 5); // Lower priority number = runs earlier
+  
+  hexo.log.info('[hexo-obsidian-callout] Registered after_post_render filter with priority 5');
 
   hexo.extend.generator.register('hexo-obsidian-callout-css', () => {
     const cssContent = fs.readFileSync(absoluteCssSource, 'utf8');
